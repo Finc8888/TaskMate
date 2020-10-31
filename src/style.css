@@ -1,0 +1,25 @@
+.text-task{
+    font-weight: bold;
+    color:white;
+}
+body{
+    overflow-x: hidden;
+}
+.content{
+    height: 100vh;
+    background-image: url(img/dna.png); /* Путь к фоновому изображению */
+    background-color: #c7b39b; /* Цвет фона */
+    background-repeat:no-repeat;
+    background-size: cover; /* Масштабируем фон */
+    background-position: right bottom; /* Положение фона */
+}
+.task-list{
+    opacity: 0.9
+}
+.text-task{
+    color:teal
+}
+.task-header{
+    color:white;
+    opacity: 0.9
+}

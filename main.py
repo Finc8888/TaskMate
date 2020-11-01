@@ -1,9 +1,12 @@
-from flask import Flask, request, make_response,jsonify
+from flask import Flask, request, make_response,jsonify,request
 from datetime import datetime
+from flask_cors import CORS
 
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.ext.declarative import DeclarativeMeta
 
 app = Flask(__name__)
+CORS(app) # This will enable CORS for all routes
 app.config['SECRET_KEY'] = '#Tm31415926'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://postgres:postgres@localhost/task_mate'
 
@@ -15,27 +18,78 @@ db = SQLAlchemy(app)
 def index():
     return 'Hello World'
 
-@app.route('/tasks/<id>')
-def tasks(id):
-    json = jsonify({"text":"ID this task is 8"})
-    res = make_response(json)
+@app.route('/create_task/', methods=['post', 'get'])
+def create_task():
+    message = ''
+    if request.method == 'POST':
+        name = request.form.get('name')  # запрос к данным формы
+        comments = request.form.get('comments')
+        item = Task(name=name,comments=comments)
+        db.session.add(item)
+        db.session.commit()
+    return str('True')
+
+
+@app.route('/create_tasks/')
+def create_tasks():
+    task_list = [
+    'Напилить дров',
+    'Прибраться за ширмой',
+    'Прибраться где были уточки',
+    'Покосить',
+    'Сходить за мясом']
+    for task in task_list:
+        item = Task(name=task)
+        db.session.add(item)
+    db.session.commit()
+    data = list(db.session.query(Task).all())
+    if len(data):
+        return str(True)
+
+@app.route('/get_all_tasks')
+def get_all_tasks():
+    data = db.session.query(Task).all()
+    response_data = []
+    for task in data:
+        item = task.as_dict()
+        response_data.append(item)
+    json_data = jsonify(response_data)
+    # json_data = json.dumps(data)
+    res = make_response(json_data)
     res.headers['Content-Type'] = 'application/json'
     res.headers['Access-Control-Allow-Origin'] = '*'
     res.headers['Server'] = 'Foobar'
     return res
 
+@app.route('/truncate_tasks', methods=['post', 'delete'])
+def truncate_tasks():
+    if request.method == 'POST':
+        for task in db.session.query(Task).all():
+            db.session.delete(task)
+        db.session.commit()
+        return str(True)
+
 class Task(db.Model):
     __tablename__ = 'tasks'
     id = db.Column(db.Integer(), primary_key=True)
     name = db.Column(db.Text(), nullable=False)
-    urgent = db.Column(db.Boolean(), default=False, nullable=False)
-    important = db.Column(db.Boolean(), default=False, nullable=False)
+    is_urgent = db.Column(db.Boolean(), default=False, nullable=False)
+    is_important = db.Column(db.Boolean(), default=False, nullable=False)
+    is_archive = db.Column(db.Boolean(), default=False, nullable=False)
     comments = db.Column(db.Text(), nullable=True)
-    created_on = db.Column(db.DateTime(), default=datetime.utcnow)
-    updated_on = db.Column(db.DateTime(), default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_on = db.Column(db.DateTime(), default=datetime.now)
+    updated_on = db.Column(db.DateTime(), default=datetime.now, onupdate=datetime.now)
 
-    def __repr__(self):
-	    return "<{}:{}>".format(self.id,  self.title[:10])
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
+    # def __repr__(self):
+	#     return "<{}:{}>".format(self.id,  self.name[:10])
+
+@app.route('/create_all_table')
+def create_all_table():
+    db.create_all()
+    return str(True)
+    
 if __name__ == "__main__":
     app.run(debug=True)

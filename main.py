@@ -1,6 +1,7 @@
 from flask import Flask, request, make_response,jsonify,request
 from datetime import datetime
 from flask_cors import CORS
+from waitress import serve
 
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.ext.declarative import DeclarativeMeta
@@ -93,3 +94,5 @@ def create_all_table():
     
 if __name__ == "__main__":
     app.run(debug=True)
+
+serve(app, host='0.0.0.0', port=8000)

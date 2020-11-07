@@ -2,7 +2,7 @@ from flask import Flask, request, make_response,jsonify,request
 from datetime import datetime
 from flask_cors import CORS
 from waitress import serve
-from os import *
+import os
 
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.ext.declarative import DeclarativeMeta

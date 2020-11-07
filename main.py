@@ -91,8 +91,11 @@ class Task(db.Model):
 def create_all_table():
     db.create_all()
     return str(True)
+
+def get_port():
+    return int(os.environ.get("PORT", 5000))
     
 if __name__ == "__main__":
     app.run(debug=True)
 
-serve(app, host='taskassistant.herokuapp.com', port=8000)
+serve(app, port=get_port(), host='0.0.0.0')

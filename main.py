@@ -18,7 +18,8 @@ db = SQLAlchemy(app)
 
 @app.route('/')
 def index():
-    return 'Hello World'
+    db = os.environ.get('DATABASE_URL')
+    return f'Db for project called {db}'
 
 @app.route('/create_task/', methods=['post', 'get'])
 def create_task():

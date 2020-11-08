@@ -1,0 +1,33 @@
+.text-task{
+    font-weight: bold;
+    color:white;
+}
+body{
+    overflow-x: hidden;
+}
+.view{
+    height: 100%;
+    background-image: url(img/dna.png); /* Путь к фоновому изображению */
+    background-color: #c7b39b; /* Цвет фона */
+    background-repeat:no-repeat;
+    background-size: cover; /* Масштабируем фон */
+    background-position: right bottom; /* Положение фона */
+}
+.content-task{
+    background-color: #9db1de59;
+    /* opacity: 0.9; */
+}
+.task-list{
+    /* opacity: 0.9 */
+}
+.text-task{
+    color:teal
+}
+.task-header{
+    color:black;
+    opacity: 0.9
+}
+.main-content{
+    width: 100%;
+    height: 100vh;
+}

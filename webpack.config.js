@@ -2,7 +2,7 @@ const path = require('path');
 
 module.exports = {
   watch:true,
-  entry: './src/index.ts',
+  entry: './static/index.ts',
   devtool: 'inline-source-map',
   module: {
     rules: [
@@ -18,6 +18,6 @@ module.exports = {
   },
   output: {
     filename: 'script.js',
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'static'),
   },
 };

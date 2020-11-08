@@ -1,4 +1,4 @@
-from flask import Flask, request, make_response,jsonify,request
+from flask import Flask, request, make_response,jsonify,request,render_template
 from datetime import datetime
 from flask_cors import CORS
 from waitress import serve
@@ -18,8 +18,17 @@ db = SQLAlchemy(app)
 
 @app.route('/')
 def index():
-    db = os.environ.get('DATABASE_URL').split('//')[1] if os.environ.get('DATABASE_URL') else 'postgres:postgres@localhost/task_mate'
-    return f'Db for project called {db}'
+    return render_template('index.html')
+
+@app.route('/task')
+def task():
+    return render_template('task.html')
+
+@app.route('/counting')
+def counting():
+    return render_template('counting.html')
+
+
 
 @app.route('/create_task/', methods=['post', 'get'])
 def create_task():

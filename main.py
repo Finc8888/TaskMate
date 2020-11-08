@@ -10,7 +10,7 @@ from sqlalchemy.ext.declarative import DeclarativeMeta
 app = Flask(__name__)
 CORS(app) # This will enable CORS for all routes
 app.config['SECRET_KEY'] = '#Tm31415926'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://postgres:postgres@localhost/task_mate'
+app.config['SQLALCHEMY_DATABASE_URI'] = f"postgresql+psycopg2://{os.environ.get('DATABASE_URL').split('//')[1] if os.environ.get('DATABASE_URL') else 'postgres:postgres@localhost/task_mate'}"
 
 # manager = Manager(app)
 db = SQLAlchemy(app)
@@ -18,7 +18,7 @@ db = SQLAlchemy(app)
 
 @app.route('/')
 def index():
-    db = os.environ.get('DATABASE_URL')
+    db = os.environ.get('DATABASE_URL').split('//')[1] if os.environ.get('DATABASE_URL') else 'postgres:postgres@localhost/task_mate'
     return f'Db for project called {db}'
 
 @app.route('/create_task/', methods=['post', 'get'])

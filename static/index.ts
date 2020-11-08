@@ -17,7 +17,7 @@ document.getElementById("btn-create-task")?.addEventListener("click",async (e) =
 })
 
 document.getElementById("btn-truncate-tasks")?.addEventListener("click",async (e) =>{
-    fetch("http://localhost:5000/truncate_tasks", {method:'post',body:''});
+    fetch("http://localhost/truncate_tasks", {method:'post',body:''});
 
     console.log('We send post asynchronously (AJAX)');
     e.preventDefault();
@@ -26,7 +26,7 @@ document.getElementById("btn-truncate-tasks")?.addEventListener("click",async (e
 
 
 const buildTaskList = async ( ) => {
-    const list = await taskList.getTaskList('http://localhost:5000/get_all_tasks');
+    const list = await taskList.getTaskList('http://localhost/get_all_tasks');
     for(let task of list){
         console.log(task.name);
         let item = `

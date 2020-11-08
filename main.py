@@ -105,8 +105,8 @@ def create_all_table():
 
 def get_port():
     return int(os.environ.get("PORT", 5000))
-    
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
 
 serve(app, port=get_port(), host='0.0.0.0')

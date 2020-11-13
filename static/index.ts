@@ -6,6 +6,7 @@ $('#exampleModal').on('shown.bs.modal', function () {
   })
 const taskList = new Task;
 const defaultTaskList = taskList.defaultTaskList;
+const UrlTaskList = '/get_all_tasks';
 
 document.getElementById("btn-create-task")?.addEventListener("click",async (e) =>{
     console.log('on submit');
@@ -26,7 +27,8 @@ document.getElementById("btn-truncate-tasks")?.addEventListener("click",async (e
 
 
 const buildTaskList = async ( ) => {
-    const list = await taskList.getTaskList('/get_all_tasks');
+    console.log('UrlTaskList',UrlTaskList);
+    const list = await taskList.getTaskList(UrlTaskList);
     for(let task of list){
         console.log(task.name);
         let item = `

@@ -26,7 +26,7 @@ document.getElementById("btn-truncate-tasks")?.addEventListener("click",async (e
 
 
 const buildTaskList = async ( ) => {
-    const list = await taskList.getTaskList('http://localhost:5000/get_all_tasks');
+    const list = await taskList.getTaskList('/get_all_tasks');
     for(let task of list){
         console.log(task.name);
         let item = `

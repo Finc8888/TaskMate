@@ -9,6 +9,7 @@ const defaultTaskList = taskList.defaultTaskList;
 const UrlTaskList = '/get_all_tasks';
 const UrlClearTaskList = '/truncate_tasks';
 const UrlRemoveTask = '/remove_task'
+const UrlCreateTask = '/create_task'
 
 interface DOMEvent<T extends EventTarget> extends Event {
   target: T
@@ -17,7 +18,7 @@ interface DOMEvent<T extends EventTarget> extends Event {
 document.getElementById("btn-create-task")?.addEventListener("click",async (e) =>{
     console.log('on submit');
     const form = document.forms[0];
-    fetch(form.action, {method:'post', body: new FormData(form)});
+    fetch(UrlCreateTask, {method:'post', body: new FormData(form)});
 
     console.log('We send post asynchronously (AJAX)');
     e.preventDefault();

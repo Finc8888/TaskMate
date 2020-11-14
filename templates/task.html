@@ -33,21 +33,21 @@
                       </ul>
                     </div>
                     <div class="add-task">
-                      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" >Создать задачу</button>
+                      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#taskModal" >Создать задачу</button>
                       <button type="button" id="btn-truncate-tasks" class="btn btn-danger">Удалить все задачи</button>
 
                       
-                      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal fade" id="taskModal" tabindex="-1" aria-labelledby="taskModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                           <div class="modal-content">
                             <div class="modal-header">
-                              <h5 class="modal-title" id="exampleModalLabel">Новая задача</h5>
+                              <h5 class="modal-title" id="taskModalLabel">Новая задача</h5>
                               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                               </button>
                             </div>
                             <div class="modal-body">
-                              <form method="POST" name="task" action="http://127.0.0.1:5000/create_task/"> 
+                              <form method="POST" name="task" action="/create_task">
                                 <div class="form-group">
                                   <label for="task-name" class="col-form-label">Задача:</label>
                                   <input type="text" class="form-control" id="task-name" name="name">

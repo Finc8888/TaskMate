@@ -2,10 +2,9 @@ import Task from './task';
 $('#exampleModal').on('shown.bs.modal', function () {
     $('#myInput').trigger('focus')
   })
-const taskList = new Task;
-const defaultTaskList = taskList.defaultTaskList;
-const UrlTaskList = '/get_all_tasks';
-const UrlClearTaskList = '/truncate_tasks';
+const task = new Task;
+const UrlTasks = '/get_all_tasks';
+const UrlClearTasks = '/truncate_tasks';
 const UrlRemoveTask = '/remove_task'
 const UrlCreateTask = '/create_task'
 
@@ -14,32 +13,42 @@ const UrlCreateTask = '/create_task'
  */
 document.getElementById("btn-create-task")?.addEventListener("click",async (e) =>{
     const form = document.forms[0];
-    fetch(UrlCreateTask, {method:'post', body: new FormData(form)});
+    await fetch(UrlCreateTask, {method:'post', body: new FormData(form)});
+    await buildTasks();
+    //TODO type any
+    ($('#taskModal') as any).modal('hide');
     e.preventDefault();
 })
 /**
  * Обработчик удаление всех текущих задач
  */
 document.getElementById('btn-truncate-tasks')?.addEventListener('click',async (e) =>{
-    fetch(UrlClearTaskList, {method:'post',body:''});
+    await fetch(UrlClearTasks, {method:'post',body:''});
+    await buildTasks();
     e.preventDefault();
 })
 /**
  * Построение списка всех текущих задач, хранящихся в базе
  */
-const buildTaskList = async ( ) => {
-    const list = await taskList.getTaskList(UrlTaskList);
-    for(let task of list){
+const buildTasks = async ( ) => {
+    task.taskList = await task.getTasks(UrlTasks);
+    // очистка списка задач на странице
+    let listElement = document.getElementsByClassName('task-list')[0];
+    while (listElement.firstChild) {
+        listElement.removeChild(listElement.firstChild);
+    }
+    for(let taskObj of task.taskList){
+
         let item = `
         <div class="card-group">
             <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
                 <div class="card-header">
-                    <div class="date">${task.created_on}</div>
-                        <button type="button" data-id=${task.id} id="btn-delete-task_${task.id}" class="btn btn-danger btn-delete-task">X</button>
+                    <div class="date">${taskObj.created_on}</div>
+                        <button type="button" data-id=${taskObj.id} id="btn-delete-task_${taskObj.id}" class="btn btn-danger btn-delete-task">X</button>
                     </div>
                 <div class="card-body">
-                    <h5 class="card-title">${task.name}</h5>
-                    <p class="card-text">${task.comment ? task.comment : ''}</p>
+                    <h5 class="card-title">${taskObj.name}</h5>
+                    <p class="card-text">${taskObj.comment ? taskObj.comment : ''}</p>
                 </div>
             </div>
         </div>
@@ -47,9 +56,10 @@ const buildTaskList = async ( ) => {
         let listElement = document.getElementsByClassName('task-list')[0];
         listElement?.insertAdjacentHTML('beforeend',item);
         // на каждую кнопку вешаем свой обработчик удаления задачи
-        document.getElementById(`btn-delete-task_${task.id}`)?.addEventListener('click',async (e:any) =>{
+        document.getElementById(`btn-delete-task_${taskObj.id}`)?.addEventListener('click',async (e:any) =>{
             const id = e.target.dataset.id;
-            fetch(`${UrlRemoveTask}/${id}`, {method:'delete',body:''});
+            await fetch(`${UrlRemoveTask}/${id}`, {method:'delete',body:''});
+            await buildTasks();
             e.preventDefault();
         });
     }
@@ -58,7 +68,7 @@ const buildTaskList = async ( ) => {
  * Запуск текущего функционала приложения
  */
 const run = () => {
-    buildTaskList();
+    buildTasks();
 
 }
 

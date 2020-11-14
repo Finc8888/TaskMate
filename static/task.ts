@@ -1,15 +1,10 @@
 class Task {
-    defaultTaskList: string[];
+    taskList: any[];
     constructor() {
-        this.defaultTaskList = [
-            'Напилить дров',
-            'Побелка в зале',
-            'Прибраться где были уточки',
-            'Покосить',
-            'Заштопать карманы'
+        this.taskList = [
         ]
     }
-   async getTaskList(url:string){
+   async getTasks(url:string){
         let response = await fetch(url);
         try{
             if (response.ok) {             

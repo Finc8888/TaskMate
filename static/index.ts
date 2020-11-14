@@ -43,7 +43,10 @@ const buildTaskList = async ( ) => {
         let item = `
         <div class="card-group">
             <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
-                <div class="card-header">${task.created_on}</div>
+                <div class="card-header">
+                    <div class="date">${task.created_on}</div>
+                        <button type="button" data-id=${task.id} id="btn-delete-task" class="btn btn-danger">X</button>
+                    </div>
                 <div class="card-body">
                     <h5 class="card-title">${task.name}</h5>
                     <p class="card-text">${task.comment ? task.comment : ''}</p>
@@ -54,22 +57,22 @@ const buildTaskList = async ( ) => {
         let listElement = document.getElementsByClassName('task-list')[0];
         console.log(listElement);
         listElement?.insertAdjacentHTML('beforeend',item);
+
+        document.getElementById('btn-delete-task')?.addEventListener('click',async (e:any) =>{
+            alert(0);
+            const id = e.target.dataset.id;
+            console.log('e',e,e.target,id);
+            fetch(`${UrlRemoveTask}/${id}`, {method:'delete',body:''});
+
+
+            e.preventDefault();
+        })
     }
 
 }
 
 const run = () => {
     console.log('run');
-    // обработчик удаления задачи
-    const deleteTask = async (e:DOMEvent<HTMLInputElement>)=>{
-        alert(0);
-        const id = e.target;
-        console.log('e',e,e.target);
-        fetch(`${UrlRemoveTask}/${id}`, {method:'delete',body:''});
-
-
-        e.preventDefault();
-    }
     buildTaskList();
 
 }

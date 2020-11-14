@@ -45,7 +45,7 @@ const buildTaskList = async ( ) => {
             <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
                 <div class="card-header">
                     <div class="date">${task.created_on}</div>
-                        <button type="button" data-id=${task.id} id="btn-delete-task" class="btn btn-danger">X</button>
+                        <button type="button" data-id=${task.id} id="btn-delete-task_${task.id}" class="btn btn-danger btn-delete-task">X</button>
                     </div>
                 <div class="card-body">
                     <h5 class="card-title">${task.name}</h5>
@@ -58,14 +58,16 @@ const buildTaskList = async ( ) => {
         console.log(listElement);
         listElement?.insertAdjacentHTML('beforeend',item);
 
+        document.getElementById(`btn-delete-task_${task.id}`)?.addEventListener('click',async (e:any) =>{
+            alert(0);
+            const id = e.target.dataset.id;
+            console.log('e',e,e.target,id);
+            fetch(`${UrlRemoveTask}/${id}`, {method:'delete',body:''});
+            e.preventDefault();
+        })
+
     }
-    document.getElementById('btn-delete-task')?.addEventListener('click',async (e:any) =>{
-        alert(0);
-        const id = e.target.dataset.id;
-        console.log('e',e,e.target,id);
-        fetch(`${UrlRemoveTask}/${id}`, {method:'delete',body:''});
-        e.preventDefault();
-    })
+
 
 }
 

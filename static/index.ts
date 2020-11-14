@@ -1,7 +1,5 @@
 import Task from './task';
-console.log('test');
 $('#exampleModal').on('shown.bs.modal', function () {
-    console.log('open window');
     $('#myInput').trigger('focus')
   })
 const taskList = new Task;
@@ -11,35 +9,27 @@ const UrlClearTaskList = '/truncate_tasks';
 const UrlRemoveTask = '/remove_task'
 const UrlCreateTask = '/create_task'
 
-interface DOMEvent<T extends EventTarget> extends Event {
-  target: T
-}
-
+/**
+ * Обработчик создания новой задачи
+ */
 document.getElementById("btn-create-task")?.addEventListener("click",async (e) =>{
-    console.log('on submit');
     const form = document.forms[0];
     fetch(UrlCreateTask, {method:'post', body: new FormData(form)});
-
-    console.log('We send post asynchronously (AJAX)');
     e.preventDefault();
 })
-
+/**
+ * Обработчик удаление всех текущих задач
+ */
 document.getElementById('btn-truncate-tasks')?.addEventListener('click',async (e) =>{
     fetch(UrlClearTaskList, {method:'post',body:''});
-
-    console.log('We send post asynchronously (AJAX)');
     e.preventDefault();
 })
-
-
-
-
-
+/**
+ * Построение списка всех текущих задач, хранящихся в базе
+ */
 const buildTaskList = async ( ) => {
-    console.log('UrlTaskList',UrlTaskList);
     const list = await taskList.getTaskList(UrlTaskList);
     for(let task of list){
-        console.log(task.name);
         let item = `
         <div class="card-group">
             <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
@@ -55,24 +45,19 @@ const buildTaskList = async ( ) => {
         </div>
         `;
         let listElement = document.getElementsByClassName('task-list')[0];
-        console.log(listElement);
         listElement?.insertAdjacentHTML('beforeend',item);
-
+        // на каждую кнопку вешаем свой обработчик удаления задачи
         document.getElementById(`btn-delete-task_${task.id}`)?.addEventListener('click',async (e:any) =>{
-            alert(0);
             const id = e.target.dataset.id;
-            console.log('e',e,e.target,id);
             fetch(`${UrlRemoveTask}/${id}`, {method:'delete',body:''});
             e.preventDefault();
-        })
-
+        });
     }
-
-
 }
-
+/**
+ * Запуск текущего функционала приложения
+ */
 const run = () => {
-    console.log('run');
     buildTaskList();
 
 }

@@ -32,7 +32,7 @@ def counting():
     return render_template('counting.html')
 
 
-@app.route('/create_task/', methods=['post', 'get'])
+@app.route('/create_task', methods=['post', 'get'])
 def create_task():
     message = ''
     if request.method == 'POST':

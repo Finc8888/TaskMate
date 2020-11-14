@@ -7,6 +7,12 @@ $('#exampleModal').on('shown.bs.modal', function () {
 const taskList = new Task;
 const defaultTaskList = taskList.defaultTaskList;
 const UrlTaskList = '/get_all_tasks';
+const UrlClearTaskList = '/truncate_tasks';
+const UrlRemoveTask = '/remove_task'
+
+interface DOMEvent<T extends EventTarget> extends Event {
+  target: T
+}
 
 document.getElementById("btn-create-task")?.addEventListener("click",async (e) =>{
     console.log('on submit');
@@ -17,12 +23,14 @@ document.getElementById("btn-create-task")?.addEventListener("click",async (e) =
     e.preventDefault();
 })
 
-document.getElementById("btn-truncate-tasks")?.addEventListener("click",async (e) =>{
-    fetch("http://localhost:5000/truncate_tasks", {method:'post',body:''});
+document.getElementById('btn-truncate-tasks')?.addEventListener('click',async (e) =>{
+    fetch(UrlClearTaskList, {method:'post',body:''});
 
     console.log('We send post asynchronously (AJAX)');
     e.preventDefault();
 })
+
+
 
 
 
@@ -51,7 +59,18 @@ const buildTaskList = async ( ) => {
 
 const run = () => {
     console.log('run');
+    // обработчик удаления задачи
+    const deleteTask = async (e:DOMEvent<HTMLInputElement>)=>{
+        alert(0);
+        const id = e.target;
+        console.log('e',e,e.target);
+        fetch(`${UrlRemoveTask}/${id}`, {method:'delete',body:''});
+
+
+        e.preventDefault();
+    }
     buildTaskList();
+
 }
 
 run();

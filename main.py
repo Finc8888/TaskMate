@@ -85,6 +85,16 @@ def truncate_tasks():
         db.session.commit()
         return str(True)
 
+@app.route('/remove_task/<id>', methods=['delete','get'])
+def remove_task(id):
+    response_object = {'status': 'success'}
+    if request.method == 'DELETE' or 'GET':
+        db.session.query(Task).filter(Task.id == id).delete()
+        db.session.commit()
+        response_object['message'] = 'Задача удалена!'
+    return jsonify(response_object)
+
+
 
 class Task(db.Model):
     __tablename__ = 'tasks'

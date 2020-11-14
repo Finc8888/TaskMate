@@ -58,16 +58,14 @@ const buildTaskList = async ( ) => {
         console.log(listElement);
         listElement?.insertAdjacentHTML('beforeend',item);
 
-        document.getElementById('btn-delete-task')?.addEventListener('click',async (e:any) =>{
-            alert(0);
-            const id = e.target.dataset.id;
-            console.log('e',e,e.target,id);
-            fetch(`${UrlRemoveTask}/${id}`, {method:'delete',body:''});
-
-
-            e.preventDefault();
-        })
     }
+    document.getElementById('btn-delete-task')?.addEventListener('click',async (e:any) =>{
+        alert(0);
+        const id = e.target.dataset.id;
+        console.log('e',e,e.target,id);
+        fetch(`${UrlRemoveTask}/${id}`, {method:'delete',body:''});
+        e.preventDefault();
+    })
 
 }
 
